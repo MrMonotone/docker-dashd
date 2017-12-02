@@ -1,6 +1,6 @@
 [Unit]
-Description=Dashd Docker Container
-Documentation=https://github.com/dashpay/docker-dashd
+Description=ZcoinD Docker Container
+Documentation=https://github.com/MrMonotone/docker-zcoind
 After=network.target docker.socket
 Requires=docker.socket
 
@@ -9,13 +9,13 @@ RestartSec=10
 Restart=always
 
 # Modify IP6_PREFIX to match network config
-Environment="NAME=dashd"
-Environment="DATA_VOL=dashd-data"
-Environment="IMG=dashpay/dashd:dev"
+Environment="NAME=zcoind"
+Environment="DATA_VOL=zcoind-data"
+Environment="IMG=MrMonotone/zcoind:dev"
 Environment="PORT=9999:9999/tcp"
 
 # To override environment variables, use local configuration directory:
-# /etc/systemd/system/docker-dashd.service/local.conf
+# /etc/systemd/system/docker-zcoind.service/local.conf
 # http://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
 # Clean-up bad state if still hanging around
@@ -25,7 +25,7 @@ ExecStartPre=-/usr/bin/docker rm -f $NAME
 ExecStartPre=-/usr/bin/docker pull $IMG
 
 # Main process
-ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/dash --name ${NAME} -p ${PORT} ${IMG} dash_oneshot $ARGS
+ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/zcoin --name ${NAME} -p ${PORT} ${IMG} zcoin_oneshot $ARGS
 
 [Install]
 WantedBy=multi-user.target

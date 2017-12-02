@@ -1,15 +1,15 @@
-# Copy to /etc/init/docker-dashd.conf
-description "Docker container for dashd p2p node"
+# Copy to /etc/init/docker-zcoind.conf
+description "Docker container for zcoind p2p node"
 start on filesystem and started docker
 stop on runlevel [!2345]
 respawn
 pre-start script
   # Clean-up if left behind
-  docker rm -f dashd-node || true
+  docker rm -f zcoind-node || true
   
   # Attempt to always update and fail silently if the network isn't ready
-  docker pull dashpay/dashd || true
+  docker pull mrmonotone/zcoind || true
 end script
 script
-  exec docker run --rm -v dashd-data:/dash --name=dashd-node --rm -p 9999:9999 -p 127.0.0.1:9998:9998 dashpay/dashd
+  exec docker run --rm -v zcoind-data:/zcoin --name=zcoind-node --rm -p 9999:9999 -p 127.0.0.1:9998:9998 mrmonotone/zcoind
 end script

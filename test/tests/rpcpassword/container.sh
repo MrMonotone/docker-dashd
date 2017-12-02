@@ -2,14 +2,14 @@
 set -e
 
 # Generate the password the first time
-dash_init 2>/dev/null
-eval `grep rpcpassword $HOME/.dashcore/dash.conf`
+zcoin_init 2>/dev/null
+eval `grep rpcpassword $HOME/.zcoin/zcoin.conf`
 rpcpassword1=$rpcpassword
 
 # Generate the password again
-rm ~/.dashcore/dash.conf
-dash_init 2>/dev/null
-eval `grep rpcpassword $HOME/.dashcore/dash.conf`
+rm ~/.zcoin/zcoin.conf
+zcoin_init 2>/dev/null
+eval `grep rpcpassword $HOME/.zcoin/zcoin.conf`
 rpcpassword2=$rpcpassword
 
 

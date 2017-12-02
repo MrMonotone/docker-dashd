@@ -4,7 +4,7 @@
 #
 set -ex
 
-DASH_IMAGE=${DASH_IMAGE:-dashpay/dashd}
+ZCOIN_IMAGE=${ZCOIN_IMAGE:-mrmonotone/zcoind}
 
 distro=$1
 shift
@@ -35,23 +35,23 @@ if [ "$distro" = "trusty" -o "$distro" = "ubuntu:14.04" ]; then
 fi
 
 # Always clean-up, but fail successfully
-docker kill dashd-node 2>/dev/null || true
-docker rm dashd-node 2>/dev/null || true
-stop docker-dashd 2>/dev/null || true
+docker kill zcoind-node 2>/dev/null || true
+docker rm zcoind-node 2>/dev/null || true
+stop docker-zcoind 2>/dev/null || true
 
 # Always pull remote images to avoid caching issues
-if [ -z "${DASH_IMAGE##*/*}" ]; then
-    docker pull $DASH_IMAGE
+if [ -z "${ZCOIN_IMAGE##*/*}" ]; then
+    docker pull $ZCOIN_IMAGE
 fi
 
 # Initialize the data container
-docker volume create --name=dashd-data
-docker run -v dashd-data:/dash --rm $DASH_IMAGE dash_init
+docker volume create --name=zcoind-data
+docker run -v zcoind-data:/zcoin --rm $ZCOIN_IMAGE zcoin_init
 
-# Start dashd via upstart and docker
-curl https://raw.githubusercontent.com/dashpay/docker-dashd/master/upstart.init > /etc/init/docker-dashd.conf
-start docker-dashd
+# Start zcoind via upstart and docker
+curl https://raw.githubusercontent.com/mrmonotone/docker-zcoind/master/upstart.init > /etc/init/docker-zcoind.conf
+start docker-zcoind
 
 set +ex
-echo "Resulting dash.conf:"
-docker run -v dashd-data:/dash --rm $DASH_IMAGE cat /dash/.dashcore/dash.conf
+echo "Resulting zcoin.conf:"
+docker run -v zcoind-data:/zcoin --rm $ZCOIN_IMAGE cat /zcoin/.zcoincore/zcoin.conf
